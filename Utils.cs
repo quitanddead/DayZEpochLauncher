@@ -32,7 +32,7 @@
             Parameters.Add("-connect=" + serverIP);
             Parameters.Add("-port=" + serverPort);
             if (GetPassword() != string.Empty) Parameters.Add("-password=" + GetPassword());
-            Parameters.Add("\"mod=" + Arma2Location());
+            Parameters.Add("\"mod=" + Arma2Location() + ";expansion;expansion\\beta;expansion\\beta\\expansion;@DayZ_Epoch\"");
             return string.Join(" ", Parameters.ToArray());
         }
 
