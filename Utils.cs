@@ -20,33 +20,20 @@
 
         public static string GetArguments()
         {
-            string Arguments, serverIP, serverPort;
+            string serverIP, serverPort;
             GetServer(out serverIP, out serverPort);
-
-            if (windowedMode())
-            {
-                if (GetPassword() == string.Empty)
-                {
-                    Arguments = "-window -skipIntro -mod=@DayZ_Epoch -noSplash -noFilePatching -world=empty -connect=" + serverIP + " -port=" + serverPort + " \"-mod=" + Arma2Location() + ";expansion;expansion\\beta;expansion\\beta\\expansion;@DayZ_Epoch\"";
-                }
-                else
-                {
-                    Arguments = "-window -skipIntro -mod=@DayZ_Epoch -noSplash -noFilePatching -world=empty -connect=" + serverIP + " -port=" + serverPort + " -password=" + GetPassword() + " \"-mod=" + Arma2Location() + ";expansion;expansion\\beta;expansion\\beta\\expansion;@DayZ_Epoch\"";
-                }
-            }
-            else
-            {
-                if (GetPassword() == string.Empty)
-                {
-                    Arguments = "-skipIntro -mod=@DayZ_Epoch -noSplash -noFilePatching -world=empty -connect=" + serverIP + " -port=" + serverPort + " \"-mod=" + Arma2Location() + ";expansion;expansion\\beta;expansion\\beta\\expansion;@DayZ_Epoch\"";
-                }
-                else
-                {
-                    Arguments = "-skipIntro -mod=@DayZ_Epoch -noSplash -noFilePatching -world=empty -connect=" + serverIP + " -port=" + serverPort + " -password=" + GetPassword() + " \"-mod=" + Arma2Location() + ";expansion;expansion\\beta;expansion\\beta\\expansion;@DayZ_Epoch\"";
-                }
-            }
-
-            return Arguments;
+            List<string> Parameters = new List<string>();
+            if (windowedMode()) Parameters.Add("-window");
+            Parameters.Add("-skipIntro");
+            Parameters.Add("-mod=@DayZ_Epoch");
+            Parameters.Add("-noSplash");
+            Parameters.Add("-noFilePatching");
+            Parameters.Add("-world=empty");
+            Parameters.Add("-connect=" + serverIP);
+            Parameters.Add("-port=" + serverPort);
+            if (GetPassword() != string.Empty) Parameters.Add("-password=" + GetPassword());
+            Parameters.Add("\"mod=" + Arma2Location());
+            return string.Join(" ", Parameters.ToArray());
         }
 
         public static bool windowedMode()
@@ -62,7 +49,6 @@
             string serverInfo = Lines[1].Replace("Server=", string.Empty);
             serverIP = serverInfo.Split(':')[0];
             serverPort = serverInfo.Split(':')[1];
-            return;
         }
 
         public static string GetPassword()
